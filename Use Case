@@ -1,0 +1,103 @@
+CustomerInquiryProcess = let
+    // Step 1: Customer Initiates Inquiry
+    CustomerInquiry = [
+        Channel = "Email, Chat, Phone, or Web Form",
+        InquiryReceived = true
+    ],
+
+    // Step 2: RPA System Receives Inquiry
+    RPAReceiveInquiry = if CustomerInquiry[InquiryReceived] then
+        [
+            DataExtraction = true,
+            InquiryCaptured = true
+        ]
+    else
+        null,
+
+    // Step 3: Data Extraction & Analysis
+    DataExtractionAnalysis = if RPAReceiveInquiry[DataExtraction] then
+        [
+            ExtractedData = "Relevant data from customer's inquiry",
+            IssueCategorized = true
+        ]
+    else
+        null,
+
+    // Step 4: Issue Categorization
+    IssueCategorization = if DataExtractionAnalysis[IssueCategorized] then
+        [
+            IssueCategory = "Billing, Technical Support, etc.",
+            NextStepDecision = true
+        ]
+    else
+        null,
+
+    // Step 5: Decision Point
+    DecisionPoint = if IssueCategorization[NextStepDecision] then
+        if IssueCategorization[IssueCategory] = "Simple" then
+            [
+                Action = "Automated Resolution",
+                EscalationRequired = false
+            ]
+        else
+            [
+                Action = "Escalate to Human Agent",
+                EscalationRequired = true
+            ]
+    else
+        null,
+
+    // Step 6: Automated Resolution
+    AutomatedResolution = if DecisionPoint[EscalationRequired] = false then
+        [
+            ResolutionSent = true,
+            Resolution = "Pull information from database and send to customer"
+        ]
+    else
+        null,
+
+    // Step 7: Escalation to Human Agent
+    EscalationToHumanAgent = if DecisionPoint[EscalationRequired] = true then
+        [
+            HumanAgentInvolved = true,
+            InquiryForwarded = true
+        ]
+    else
+        null,
+
+    // Step 8: Human Agent Intervention
+    HumanAgentIntervention = if EscalationToHumanAgent[HumanAgentInvolved] then
+        [
+            IssueResolved = true,
+            ApplicationUpdated = true
+        ]
+    else
+        null,
+
+    // Step 9: Feedback & Closure
+    FeedbackClosure = if AutomatedResolution[ResolutionSent] or HumanAgentIntervention[IssueResolved] then
+        [
+            ConfirmationSent = true,
+            IssueClosed = true
+        ]
+    else
+        null,
+
+    // Step 10: Data Logging & Reporting
+    DataLoggingReporting = if FeedbackClosure[IssueClosed] then
+        [
+            LogActions = "All actions logged",
+            CaseUpdated = true,
+            ReportGenerated = true
+        ]
+    else
+        null
+in
+    [CustomerInquiry, RPAReceiveInquiry, DataExtractionAnalysis, IssueCategorization, DecisionPoint, AutomatedResolution, EscalationToHumanAgent, HumanAgentIntervention, FeedbackClosure, DataLoggingReporting]
+
+
+
+
+
+
+
